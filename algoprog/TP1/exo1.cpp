@@ -7,10 +7,19 @@
 long power(long value, long n)
 {
     Context _("power", value, n); // do not care about this, it allow the display of call stack
-
-    // your code
+    if (n==0)
+    {
+        return_and_display(1);
+    }
+    else if (n==1)
+    {
+        return_and_display(value);
+    }
+    else {
+        long res = value * power(value, n-1);
+        return_and_display(res);
+    }
     // return_and_display shows the result in the window and returns it
-    return_and_display(1);
 }
 
 int main(int argc, char *argv[])
