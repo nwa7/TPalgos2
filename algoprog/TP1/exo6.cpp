@@ -9,35 +9,43 @@ struct Noeud{
 
 struct Liste{
     Noeud* premier;
-    // your code
+    Noeud* dernier;
 };
 
 struct DynaTableau{
     int* donnees;
-    // your code
+    size_t capacity;
 };
 
 
 void initialise(Liste* liste)
 {
-
+    liste->premier = (Noeud*)calloc(sizeof(Noeud), 1);
+    liste->dernier = liste->premier;
 }
 
 bool est_vide(const Liste* liste)
 {
-    return false;
+    return liste->premier == NULL;
 }
 
 void ajoute(Liste* liste, int valeur)
 {
-
+    Noeud* tmp = (Noeud*)calloc(sizeof(Noeud), 1);
+    tmp->donnee = valeur;
+    liste->dernier->suivant = tmp;
+    liste->dernier = tmp;
 }
 
 void affiche(const Liste* liste)
 {
-
+    Noeud* var = liste->premier;
+    for(;var != NULL; var = var->suivant) {
+        printf("%i", var->donnee);
+    }
 }
 
+/**
 int recupere(const Liste* liste, int n)
 {
     return 0;
@@ -112,28 +120,28 @@ int retire_pile(Liste* liste)
 {
     return 0;
 }
-
+**/
 
 int main()
 {
     Liste liste;
     initialise(&liste);
-    DynaTableau tableau;
-    initialise(&tableau, 5);
+    //DynaTableau tableau;
+    //initialise(&tableau, 5);
 
     if (!est_vide(&liste))
     {
         std::cout << "Oups y a une anguille dans ma liste" << std::endl;
     }
 
-    if (!est_vide(&tableau))
-    {
-        std::cout << "Oups y a une anguille dans mon tableau" << std::endl;
-    }
+    //if (!est_vide(&tableau))
+    //{
+        //std::cout << "Oups y a une anguille dans mon tableau" << std::endl;
+    //}
 
     for (int i=1; i<=7; i++) {
         ajoute(&liste, i*7);
-        ajoute(&tableau, i*5);
+        //ajoute(&tableau, i*5);
     }
 
     if (est_vide(&liste))
@@ -141,28 +149,28 @@ int main()
         std::cout << "Oups y a une anguille dans ma liste" << std::endl;
     }
 
-    if (est_vide(&tableau))
-    {
-        std::cout << "Oups y a une anguille dans mon tableau" << std::endl;
-    }
+    //if (est_vide(&tableau))
+    //{
+    //    std::cout << "Oups y a une anguille dans mon tableau" << std::endl;
+    //}
 
     std::cout << "Elements initiaux:" << std::endl;
     affiche(&liste);
-    affiche(&tableau);
+    //affiche(&tableau);
     std::cout << std::endl;
 
-    std::cout << "5e valeur de la liste " << recupere(&liste, 4) << std::endl;
-    std::cout << "5e valeur du tableau " << recupere(&tableau, 4) << std::endl;
+    //std::cout << "5e valeur de la liste " << recupere(&liste, 4) << std::endl;
+    //std::cout << "5e valeur du tableau " << recupere(&tableau, 4) << std::endl;
 
-    std::cout << "21 se trouve dans la liste à " << cherche(&liste, 21) << std::endl;
-    std::cout << "15 se trouve dans la liste à " << cherche(&tableau, 15) << std::endl;
+    //std::cout << "21 se trouve dans la liste à " << cherche(&liste, 21) << std::endl;
+    //std::cout << "15 se trouve dans la liste à " << cherche(&tableau, 15) << std::endl;
 
-    stocke(&liste, 4, 7);
-    stocke(&tableau, 4, 7);
+    //stocke(&liste, 4, 7);
+    //stocke(&tableau, 4, 7);
 
     std::cout << "Elements après stockage de 7:" << std::endl;
     affiche(&liste);
-    affiche(&tableau);
+    //affiche(&tableau);
     std::cout << std::endl;
 
     Liste pile; // DynaTableau pile;
@@ -171,15 +179,15 @@ int main()
     initialise(&pile);
     initialise(&file);
 
-    for (int i=1; i<=7; i++) {
-        pousse_file(&file, i);
-        pousse_pile(&pile, i);
-    }
+    //for (int i=1; i<=7; i++) {
+    //    pousse_file(&file, i);
+    //    pousse_pile(&pile, i);
+    //}
 
     int compteur = 10;
     while(!est_vide(&file) && compteur > 0)
     {
-        std::cout << retire_file(&file) << std::endl;
+    //    std::cout << retire_file(&file) << std::endl;
         compteur--;
     }
 
@@ -191,7 +199,7 @@ int main()
     compteur = 10;
     while(!est_vide(&pile) && compteur > 0)
     {
-        std::cout << retire_pile(&pile) << std::endl;
+    //    std::cout << retire_pile(&pile) << std::endl;
         compteur--;
     }
 

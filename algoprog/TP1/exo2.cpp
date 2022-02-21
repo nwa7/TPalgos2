@@ -7,12 +7,19 @@
 int fibonacci(int value)
 {
     Context _("fibonacci", value); // do not care about this, it allow the display of call stack
+    if (value == 1){
+        return_and_display(1);
+    }
 
-    // your code
+    else if (value == 0){
+        return_and_display(0);
+    }
 
-    return_and_display(value);
+
+    else {
+        return_and_display(fibonacci(value-1)+fibonacci(value-2));
+    }
 }
-
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);  // create a window manager
