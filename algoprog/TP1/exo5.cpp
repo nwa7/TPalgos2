@@ -7,17 +7,17 @@ int isMandelbrot(Point z, int n, Point point){
 
     // check n
     if (n==0){
-        return false;
+        return true;
     }
     else {
         Point newz;
-        z.length();
+        newz.x=(z.x)*(z.x)-(z.y)*(z.y);
+        newz.y=2*(z.y)*(z.x);
 
-        newz.x=z.x;
-        newz.y=z.y;
-        if (newz.length()>2){
-            return true;
+        if (z.length()>2){
+            return false;
         }
+
         else {
             isMandelbrot(z, n-1, point);
         }
