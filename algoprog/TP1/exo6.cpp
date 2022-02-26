@@ -173,10 +173,9 @@ void pousse_file(Liste* liste, int valeur)
         var->suivant=newnoeud;
     }
     else{
-        exit(-1);
+        liste->premier=newnoeud;
     }
 }
-
 //int retire_file(Liste* liste)
 int retire_file(Liste* liste)
 {
@@ -204,7 +203,9 @@ void pousse_pile(Liste* liste, int valeur)
         liste->premier=newnoeud;
     }
     else{
-        exit(-1);
+        newnoeud->donnee=valeur; 
+        newnoeud->suivant=NULL;
+        liste->premier=newnoeud;
     }
 }
 
@@ -226,19 +227,6 @@ int retire_pile(Liste* liste)
 
 int main()
 {
-    /***
-    Liste liste;
-    initialise(&liste);
-    cout<<est_vide(&liste)<<endl;
-    ajoute(&liste,5);
-    ajoute(&liste,6);
-    ajoute(&liste,7);
-    affiche(&liste);
-    cout <<recupere(&liste,2)<<endl;
-    cout<<cherche(&liste, 5)<<endl;
-    stocke(&liste, 2,8);
-    cout<<cherche(&liste, 8)<<endl;
-    ***/
     Liste liste;
     initialise(&liste);
     DynaTableau tableau;
