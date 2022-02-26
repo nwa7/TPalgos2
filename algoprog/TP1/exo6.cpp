@@ -1,5 +1,7 @@
 #include <iostream>
 
+// N'a pas été réalisé avec QT
+
 using namespace std;
 
 struct Noeud{
@@ -88,40 +90,72 @@ void stocke(Liste* liste, int n, int valeur)
     }
 }
 
-void ajoute(DynaTableau* tableau, int valeur)
+void initialise2(DynaTableau* tableau, int capacite)
 {
+    tableau->donnees=new int(capacite);
+    tableau->capacity = capacite;
+    tableau->dernier= 0;
+}
 
+bool est_vide2(const DynaTableau* tableau)
+{
+    return tableau->dernier == 0;
 }
 
 
-void initialise(DynaTableau* tableau, int capacite)
+void ajoute2(DynaTableau* tableau, int valeur)
 {
-
+    if (tableau->dernier == tableau->capacity){
+        int *newint = new int;
+        *newint = valeur;
+        tableau->donnees[tableau->dernier]=*newint;
+        tableau->capacity+=1;
+    }
+    else{
+        tableau->donnees[tableau->dernier]=valeur;
+    }
+    
+    tableau->dernier+=1;
 }
 
-bool est_vide(const DynaTableau* liste)
+void affiche2(const DynaTableau* tableau)
 {
-    return false;
+
+    for(int compteur=0; compteur< tableau->dernier; compteur++) {
+        cout <<tableau->donnees[compteur]<< ' ';
+    }
+    cout << endl;
 }
 
-void affiche(const DynaTableau* tableau)
+int recupere2(const DynaTableau* tableau, int n)
 {
-
+    if (n>tableau->dernier){
+        cout << "Index out of bound"<<endl;
+        return(-1);
+    }
+    else{
+        return(tableau->donnees[n]);
+    }
 }
 
-int recupere(const DynaTableau* tableau, int n)
-{
-    return 0;
-}
-
-int cherche(const DynaTableau* tableau, int valeur)
-{
+int cherche2(const DynaTableau* tableau, int valeur)
+    {  
+    for(int compteur=0; compteur < tableau->dernier; compteur++) {
+        if (tableau->donnees[compteur]==valeur){
+            return(compteur);
+        }
+    }
     return -1;
 }
 
-void stocke(DynaTableau* tableau, int n, int valeur)
+void stocke2(DynaTableau* tableau, int n, int valeur)
 {
-
+    if (n>tableau->dernier){
+        cout << "Index out of bound"<<endl;
+    }
+    else{
+        tableau->donnees[n]=valeur;
+    }
 }
 
 //void pousse_file(DynaTableau* liste, int valeur)
