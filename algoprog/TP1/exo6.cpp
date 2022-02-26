@@ -9,19 +9,18 @@ struct Noeud{
 
 struct Liste{
     Noeud* premier;
-    Noeud* dernier;
 };
 
 struct DynaTableau{
     int* donnees;
     size_t capacity;
+    int dernier;
 };
 
 
 void initialise(Liste* liste)
 {
-    liste->premier = (Noeud*)calloc(sizeof(Noeud), 1);
-    liste->dernier = liste->premier;
+    liste->premier = NULL;
 }
 
 bool est_vide(const Liste* liste)
@@ -31,16 +30,16 @@ bool est_vide(const Liste* liste)
 
 void ajoute(Liste* liste, int valeur)
 {
-    Noeud* tmp = (Noeud*)calloc(sizeof(Noeud), 1);
-    tmp->donnee = valeur;
-    liste->dernier->suivant = tmp;
-    liste->dernier = tmp;
+    Noeud* newnoeud = (Noeud*)calloc(sizeof(Noeud), 1);
+    newnoeud->donnee = valeur;
+    newnoeud->suivant = liste->premier;
+    liste->premier = newnoeud;
 }
 
 void affiche(const Liste* liste)
 {
     Noeud* var = liste->premier;
-    for(;var != NULL; var = var->suivant) {
+    for(var; var != NULL; var = var->suivant) {
         printf("%i", var->donnee);
     }
 }
