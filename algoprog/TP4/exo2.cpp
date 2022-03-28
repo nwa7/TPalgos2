@@ -5,6 +5,7 @@
 #include <QDebug>
 
 #include "tp3.h"
+#include "tp4.h"
 #include "HuffmanNode.h"
 
 _TestMainWindow* w = nullptr;
@@ -18,6 +19,18 @@ void HuffmanHeap::insertHeapNode(int heapSize, unsigned char c, int frequences)
       * int, this->get(i): HuffmanNode*  <-> this->get(i).frequences
      **/
     int i = heapSize;
+    /*** écrit au tableau ***/
+    this->get(i) = HuffmanNode(c, frequences);
+    this->set(i, HuffmanNode(c, frequences));
+    (*this)[i] = HuffmanNode(c,frequences);
+    /*** fin écrit au tableau ***/
+    this->get(i) = c;
+    this->get(i).frequences = frequences;
+    while (i > 0 && this->get(i).frequences > this->get((i - 1) / 2).frequences)
+    {
+        std::swap(this->get(i), this->get((i - 1) / 2));
+        i = (i - 1) / 2;
+    }
 }
 
 void HuffmanNode::insertNode(HuffmanNode* node)
@@ -82,6 +95,11 @@ void charFrequences(string data, Array& frequences)
       * frequences is an array of 256 int. frequences[i]
       * is the frequence of the caracter with ASCII code i
      **/
+    size_t size = data.size();
+    for (size_t x = 0; x < size; x++){
+        int index = data[x];
+        frequences[index]++;
+    }
 }
 
 void huffmanHeap(Array& frequences, HuffmanHeap& heap, int& heapSize)
@@ -91,6 +109,7 @@ void huffmanHeap(Array& frequences, HuffmanHeap& heap, int& heapSize)
       * Define heapSize as numbers of inserted nodes
      **/
     heapSize = 0;
+
 }
 
 void huffmanDict(HuffmanHeap& heap, int heapSize, HuffmanNode*& dict)
@@ -140,7 +159,7 @@ int main(int argc, char *argv[])
     for (i=0; i < (int)frequences.size(); ++i)
         frequences.__set__(i, 0);
 
-    charFrequences(data, frequences);
+        charFrequences(data, frequences);
 
     for (i=0; i < (int)frequences.size(); ++i)
         if (frequences[i]>0)
