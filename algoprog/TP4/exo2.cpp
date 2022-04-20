@@ -109,6 +109,7 @@ void huffmanHeap(Array& frequences, HuffmanHeap& heap, int& heapSize)
       * Define heapSize as numbers of inserted nodes
      **/
     heapSize = 0;
+<<<<<<< HEAD
     for (size_t i=0; i < 256; i++){
         if (frequences[i]!=0){
             heap->insertHeapNode(heapSize, (char) i, frequence[i] )
@@ -116,6 +117,9 @@ void huffmanHeap(Array& frequences, HuffmanHeap& heap, int& heapSize)
 
         }
     }
+=======
+
+>>>>>>> bd9f954cb2a84d3c1fa3138a7baaf4b571759766
 }
 
 
