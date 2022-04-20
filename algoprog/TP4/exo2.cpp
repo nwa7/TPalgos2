@@ -5,6 +5,7 @@
 #include <QDebug>
 
 #include "tp3.h"
+#include "tp4.h"
 #include "HuffmanNode.h"
 
 _TestMainWindow* w = nullptr;
@@ -18,12 +19,26 @@ void HuffmanHeap::insertHeapNode(int heapSize, unsigned char c, int frequences)
       * int, this->get(i): HuffmanNode*  <-> this->get(i).frequences
      **/
     int i = heapSize;
+    /*** écrit au tableau ***/
+    this->get(i) = HuffmanNode(c, frequences);
+    this->set(i, HuffmanNode(c, frequences));
+    (*this)[i] = HuffmanNode(c,frequences);
+    /*** fin écrit au tableau ***/
+    this->get(i) = c;
+    this->get(i).frequences = frequences;
+    while (i > 0 && this->get(i).frequences > this->get((i - 1) / 2).frequences)
+    {
+        std::swap(this->get(i), this->get((i - 1) / 2));
+        i = (i - 1) / 2;
+    }
 }
 
 void HuffmanNode::insertNode(HuffmanNode* node)
 {
     if( this->isLeaf() )
     {
+        HuffmanNode* copy = new HuffmanNode(this->character, this->frequences);
+        this->character = '\0';
         /**
          * On crée un nouveau noeud qui copie les données de this
          * (char, frequences)
@@ -34,8 +49,6 @@ void HuffmanNode::insertNode(HuffmanNode* node)
          * fréquence devient la somme de ses nouveaux enfants et
          * son caractère devient '\0'
         **/
-        HuffmanNode* copy = new HuffmanNode(this->character, this->frequences);
-        this->character = '\0';
     }
     else
     {
@@ -82,6 +95,11 @@ void charFrequences(string data, Array& frequences)
       * frequences is an array of 256 int. frequences[i]
       * is the frequence of the caracter with ASCII code i
      **/
+    size_t size = data.size();
+    for (size_t x = 0; x < size; x++){
+        int index = data[x];
+        frequences[index]++;
+    }
 }
 
 void huffmanHeap(Array& frequences, HuffmanHeap& heap, int& heapSize)
@@ -91,36 +109,72 @@ void huffmanHeap(Array& frequences, HuffmanHeap& heap, int& heapSize)
       * Define heapSize as numbers of inserted nodes
      **/
     heapSize = 0;
+    for (size_t i=0; i < 256; i++){
+        if (frequences[i]!=0){
+            heap->insertHeapNode(heapSize, (char) i, frequence[i] )
+            heapSize +=1; // on s'en sert quand même
+
+        }
+    }
 }
+
 
 void huffmanDict(HuffmanHeap& heap, int heapSize, HuffmanNode*& dict)
 {
+    dict = new HuffmanNode(heap[0].character, heap[0].frequences);
+    for(size_t i = 1; i < heapSize; i++)
+    {
+        HuffmanNode *new_node=new HuffmanNode(heap[i].character, heap[i].frequences);
+        dict->insertNode(new_node);
+    }
+}
     /**
       * For each value in heap, insert a new node in dict
      **/
-    dict = new HuffmanNode(heap[0].character, heap[0].frequences);
 }
 
 string huffmanEncode(HuffmanNode** characters, string toEncode)
 {
+    string encoded = "";
+    for (size_t i = 0 ; i < toEncode.size() ; i++){
+        encoded.append(characters[(int) toEncode[i]]->code;
+    }
+    return encoded;
+
     /**
       * characters gather all leaves in the Huffman dict
       * characters[i] is the HuffmanNode representing the
       * character with the ASCII code i
      **/
-    string encoded = "";
-    return encoded;
+
+
 }
 
 string huffmanDecode(HuffmanNode* dict, string toDecode)
 {
+    string decoded = "";
+    HuffmanNode *parcours= dict;
+    for (size_t i; i < toDecode.size(); i++){
+        if (toDecode[i]=='0'){
+            parcours=parcours->left;
+        }
+        else {
+            parcours = parcours->right;
+        }
+        if(parcours->isLeaf()){
+            decoded.append(parcours->character);
+            parcours=dict;
+        }
+    }
+    return decoded;
+
+
+
     /**
-      * Use each caracters of toDecode, which is '0' either '1',
+      * Use each characters of toDecode, which is '0' either '1',
       * to travel the Huffman dict. Each time you get a leaf, get
       * the decoded character of this node.
      **/
-    string decoded = "";
-    return decoded;
 }
 
 
@@ -140,7 +194,7 @@ int main(int argc, char *argv[])
     for (i=0; i < (int)frequences.size(); ++i)
         frequences.__set__(i, 0);
 
-    charFrequences(data, frequences);
+        charFrequences(data, frequences);
 
     for (i=0; i < (int)frequences.size(); ++i)
         if (frequences[i]>0)
