@@ -103,7 +103,7 @@ void GraphWindow::updateLayout()
         int itemWidth = qMax<int>(50, width() * 0.01f);
         int maxX=0, maxY=0;
 
-        updateStatusItem(itemWidth);
+        updateStatusItem(itemWidth, maxX, maxY);
 		updateBackground();
 		updateGraphItems(itemWidth, maxX, maxY);
 

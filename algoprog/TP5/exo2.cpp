@@ -22,13 +22,16 @@ std::vector<string> TP5::names(
 
 unsigned long int hash(string key)
 {
+    unsigned long int hash_value;
+    for (uint x = 0; x < key.size() ; x++){
+        hash_value += pow(128,x) * (int)key[x];
+    }
+    return hash_value;
     // return an unique hash id from key
-    return 0;
 }
 
 struct MapNode : public BinaryTree
 {
-
     string key;
     unsigned long int key_hash;
 
@@ -52,7 +55,23 @@ struct MapNode : public BinaryTree
      */
     void insertNode(MapNode* node)
     {
+        if(this->key_hash > node->key_hash){
+            if(this->right){
+                this->right->insertNode(node);
+            }
+            else{
+                this->right = node;
+            }
+        }
 
+        else{
+            if(this->left){
+                this->left->insertNode(node);
+            }
+            else{
+                this->left = node;
+            }
+        }
     }
 
     void insertNode(string key, int value)
@@ -99,7 +118,7 @@ struct Map
 int main(int argc, char *argv[])
 {
     srand(time(NULL));
-	Map map;
+    Map map;
 
     map.insert("Yolo", 20);
     for (std::string& name : TP5::names)

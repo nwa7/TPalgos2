@@ -1,4 +1,5 @@
 #include <tp5.h>
+#include <stdio.h>
 #include <QApplication>
 #include <time.h>
 
@@ -14,15 +15,31 @@ std::vector<string> TP5::names(
     "Fanny", "Jeanne", "Elo"
 });
 
+/***
+#define ARRAY_SIZE 40
+int hash(char* string)
+{
+    int i = 0;
+    int hash_value = 0;
+    while(string[i] != '\0')
+    {
+        hash_value += (int)string[i];
+        i++;
+    }
+    return hash_value % ARRAY_SIZE;
+}
+***/
 
 int HashTable::hash(std::string element)
 {
+    int hash_value =  element[0];
     // use this->size() to get HashTable size
-    return 0;
+    return hash_value%(this->size());
 }
 
-void HashTable::insert(std::string element)
-{
+void HashTable::insert(std::string element){
+    int hash_value= hash(element);
+    this->set(hash_value, element);
     // use (*this)[i] or this->get(i) to get a value at index i
 }
 
@@ -34,12 +51,20 @@ void HashTable::insert(std::string element)
  */
 void buildHashTable(HashTable& table, std::string* names, int namesCount)
 {
+    for (int x = 0; x<namesCount; x++){
+        table.insert(names[x]);
+    }
+
 
 }
 
 bool HashTable::contains(std::string element)
 {
     // Note: Do not use iteration (for, while, ...)
+    int hash_value= hash(element);
+    if ((*this)[hash_value] == element){
+        return true;
+    }
     return false;
 }
 
