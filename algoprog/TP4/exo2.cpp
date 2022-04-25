@@ -18,17 +18,17 @@ void HuffmanHeap::insertHeapNode(int heapSize, unsigned char c, int frequences)
       * Do Like Heap::insertHeapNode (exo1) but use HuffmanNode instead of
       * int, this->get(i): HuffmanNode*  <-> this->get(i).frequences
      **/
-    int i = heapSize;
-    /*** écrit au tableau ***/
+    /***
     this->get(i) = HuffmanNode(c, frequences);
     this->set(i, HuffmanNode(c, frequences));
     (*this)[i] = HuffmanNode(c,frequences);
-    /*** fin écrit au tableau ***/
+    ***/
+    int i = heapSize;
     this->get(i) = c;
     this->get(i).frequences = frequences;
     while (i > 0 && this->get(i).frequences > this->get((i - 1) / 2).frequences)
     {
-        std::swap(this->get(i), this->get((i - 1) / 2));
+        this->swap(i, (i - 1) / 2);
         i = (i - 1) / 2;
     }
 }
@@ -37,8 +37,6 @@ void HuffmanNode::insertNode(HuffmanNode* node)
 {
     if( this->isLeaf() )
     {
-        HuffmanNode* copy = new HuffmanNode(this->character, this->frequences);
-        this->character = '\0';
         /**
          * On crée un nouveau noeud qui copie les données de this
          * (char, frequences)
@@ -49,6 +47,16 @@ void HuffmanNode::insertNode(HuffmanNode* node)
          * fréquence devient la somme de ses nouveaux enfants et
          * son caractère devient '\0'
         **/
+        HuffmanNode* copy = new HuffmanNode(this->character, this->frequences);
+       if (node->frequences < this->frequences){
+           this->right = node;
+           this->left= copy;
+       }
+       else{
+           this->right = copy;
+           this->left = node;
+       }
+       this->character = '\0'; 
     }
     else
     {
@@ -59,6 +67,12 @@ void HuffmanNode::insertNode(HuffmanNode* node)
          * Remarques: Si un noeud n'est pas une feuille alors ses deux enfants sont
          * non-null (grâce à la condition d'au-dessus)
         **/
+        if (3 * node->frequences < this->frequences){
+            this->left->insertNode(node);
+        }
+        else {
+            this->right->insertNode(node);
+        }
     }
     /**
      * à chaque insertion on additionne au noeud courant la valeur
@@ -75,6 +89,17 @@ void HuffmanNode::processCodes(std::string baseCode)
       * child, add '0' to the baseCode and each time call the right
       * child, add '1'. If the node is a leaf, it takes the baseCode.
      **/
+    if (this->isLeaf()){
+        this->code = baseCode;
+    }
+    else{
+        if (this->left != NULL){
+            this->left->processCodes(baseCode + '0');
+        }
+        if (this->right != NULL){
+            this->right->processCodes(baseCode + '1');
+        }
+    }
 }
 
 void HuffmanNode::fillCharactersArray(HuffmanNode** nodes_for_chars)
@@ -109,17 +134,13 @@ void huffmanHeap(Array& frequences, HuffmanHeap& heap, int& heapSize)
       * Define heapSize as numbers of inserted nodes
      **/
     heapSize = 0;
-<<<<<<< HEAD
     for (size_t i=0; i < 256; i++){
         if (frequences[i]!=0){
             heap->insertHeapNode(heapSize, (char) i, frequence[i] )
-            heapSize +=1; // on s'en sert quand même
+            heapSize +=1; 
 
         }
     }
-=======
-
->>>>>>> bd9f954cb2a84d3c1fa3138a7baaf4b571759766
 }
 
 
@@ -141,7 +162,7 @@ string huffmanEncode(HuffmanNode** characters, string toEncode)
 {
     string encoded = "";
     for (size_t i = 0 ; i < toEncode.size() ; i++){
-        encoded.append(characters[(int) toEncode[i]]->code;
+        encoded.append(characters[(int)toEncode[i]]->code;
     }
     return encoded;
 
@@ -158,7 +179,7 @@ string huffmanDecode(HuffmanNode* dict, string toDecode)
 {
     string decoded = "";
     HuffmanNode *parcours= dict;
-    for (size_t i; i < toDecode.size(); i++){
+    for (size_t i = 0; i < toDecode.size(); i++){
         if (toDecode[i]=='0'){
             parcours=parcours->left;
         }
