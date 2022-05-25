@@ -22,9 +22,12 @@ std::vector<string> TP5::names(
 
 unsigned long int hash(string key)
 {
-    unsigned long int hash_value;
-    for (uint x = 0; x < key.size() ; x++){
-        hash_value += pow(128,x) * (int)key[x];
+    unsigned long int hash_value = 0;
+    int index = 0;
+
+    for (uint x = key.size() - 1 ; x > 0  ; x--){
+        hash_value += pow(128,x) * (int)key[index];
+        index++;
     }
     return hash_value;
     // return an unique hash id from key
